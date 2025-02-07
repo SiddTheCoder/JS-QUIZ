@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body class="bg-slate-800">
+        <div id="quizContainer"
+            class="min-w-max w-[75%] bg-slate-200 text-black min-h-[70vh] h-auto rounded px-10 py-5 mx-auto my-10 flex flex-col relative">
+            <div class="w-full flex justify-center">
+                <button id="quizSubmitBtn"
+                    class="absolute bottom-10 w-max  bg-blue-600 px-10 py-2 rounded shadow-md text-white">Submit
+                    Quiz</button>
+            </div>
+        </div>
+
+        <script src="scripts/questions.js"></script>
+        <script src="scripts/questionRender.js"></script>
+        <script src="scripts/dataStoring.js"></script>
+    
+        <script>
+            // Flag to track if the user has performed any activity (e.g., selected options)
+            let hasUserInteracted = false;
+
+            // Flag to track if the user has clicked the submit button
+            let isQuizSubmitted = false;
+
+            // Function to track user interactions (e.g., answering questions)
+            function trackUserInteraction() {
+                hasUserInteracted = true;
+            }
+
+            // Add event listeners to quiz options to track activity
+            document.querySelectorAll('input[name^="option"]').forEach(input => {
+                input.addEventListener('change', trackUserInteraction); // Track when user selects any option
+            });
+
+            // Event listener to show alert if user tries to leave or refresh the page
+            window.addEventListener('beforeunload', (event) => {
+                // Block the user from leaving or refreshing the page only if they interacted with the quiz
+                if (hasUserInteracted && !isQuizSubmitted) {
+                    const message = "You have unsaved changes. Are you sure you want to leave?";
+                    event.returnValue = message;  // Standard for most browsers
+                    return message;  // Required for some browsers (like Chrome)
+                }
+            });
+        </script>
+
+    </body>
+</html>
